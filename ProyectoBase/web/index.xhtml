@@ -35,10 +35,9 @@
                     </ul>
                 </div>
             </nav>
-
+            <h:messages id="mensajeNoExisteUser" style="color:blue;margin:8px;"/> 
 
        
-              
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -132,13 +131,13 @@
        <h:messages id="mensajeValidacion" style = "color:red;margin:8px;" /> 
        
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <h:inputText required="true" class="form-control" id="exampleInputEmail1" requiredMessage="Ingrese un correo"  html5:placeholder="Ingrese su correo...." />
+                                    <label for="exampleInputEmail1">Nombre Usuario</label>
+                                    <h:inputText value="#{usuarioSesion.usuario}" required="true" class="form-control" id="exampleInputEmail1" requiredMessage="Ingrese un correo"  html5:placeholder="Ingrese su correo...." />
                                     <small id="emailHelp" class="form-text text-muted"><h:message for="form1:exampleInputEmail1"></h:message> </small>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Password</label>
-                                    <h:inputSecret required="true" class="form-control" id="exampleInputPassword1" requiredMessage="Ingrese una clave" html5:placeholder="Password"/>
+                                    <h:inputSecret value="#{usuarioSesion.clave}" required="true" class="form-control" id="exampleInputPassword1" requiredMessage="Ingrese una clave" html5:placeholder="Password"/>
                                 </div>
                               
        <a href="rclave.xhtml">Olvido su contraseña?</a>
@@ -146,7 +145,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <h:commandButton value="Enviar" class="btn btn-primary">
+                                <h:commandButton action="#{usuarioSesion.validarUsuario()}" value="Enviar" class="btn btn-primary">
                                   
                                 </h:commandButton>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-       xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Facelet Title</title>
@@ -39,23 +39,24 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
                     <h:form>
-                        <h:messages style="color:red;margin:8px;"/> 
+                        <h:messages  style="color:red;margin:8px;"/> 
+                        <h:messages id="mensajeRegistro" style="color:blue;margin:8px;"/> 
 
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label for="validationCustom01">Nombres</label>
                                 <h:inputText value="#{usuarioSesion.nombre}" class="form-control" id="nombresId"  maxlength="20" html5:placeholder="Nombres"  required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre"  />
-                                    <div class="valid-feedback">
-                                        <h:message for="nombresId"></h:message>
-                                    </div>
+                                <div class="valid-feedback">
+                                    <h:message for="nombresId"></h:message>
+                                </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="validationCustom02">Apellidos</label>
                                 <h:inputText value="#{usuarioSesion.apellido}" class="form-control" id="apellidosId" html5:placeholder="Apellidos" maxlength="20" required="true" validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un apellido"  />
-                                    <div class="valid-feedback">
-                                        <h:message for="apellidosId"></h:message>
-                                    </div>
-                       
+                                <div class="valid-feedback">
+                                    <h:message for="apellidosId"></h:message>
+                                </div>
+
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="validationCustomUsername">Nombre Usuario</label>
@@ -67,7 +68,7 @@
                                     <div class="valid-feedback">
                                         <h:message for="nombreUsuarioId"></h:message>
                                     </div>
-                       
+
                                 </div>
                             </div>
                         </div>
@@ -75,27 +76,27 @@
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom03">Clave</label>
                                 <h:inputText value="#{usuarioSesion.clave}" class="form-control" id="claveId" html5:placeholder="Clave" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese una clave"  />
-                                    <div class="valid-feedback">
-                                        <h:message for="claveId"></h:message>
-                                    </div>
+                                <div class="valid-feedback">
+                                    <h:message for="claveId"></h:message>
+                                </div>
                             </div>
-                           
-                             <div class="col-md-6 mb-3">
+
+                            <div class="col-md-6 mb-3">
                                 <label for="validationCustom04">Correo</label>
                                 <h:inputText value="#{usuarioSesion.correo}" class="form-control" id="correoId" html5:placeholder="Correo Electronico" maxlength="50" required="true"  validatorMessage="No debe superar 50 caracteres" requiredMessage="Ingrese una correo electronico"  />
-                                    <div class="valid-feedback">
-                                        <h:message for="correoId"></h:message>
-                                    </div>
+                                <div class="valid-feedback">
+                                    <h:message for="correoId"></h:message>
+                                </div>
                             </div>
-                           
+
                         </div>
-                       
-                        <h:commandButton  class="btn btn-primary" value="Registrar..."></h:commandButton>
+
+                        <h:commandButton action="#{usuarioSesion.adicionarUsuario()}"  class="btn btn-primary" value="Registrar..."></h:commandButton>
+
                     </h:form>
 
-
                 </div>
-                  <div class="col-md-2"></div>
+                <div class="col-md-2"></div>
 
             </div>
 
