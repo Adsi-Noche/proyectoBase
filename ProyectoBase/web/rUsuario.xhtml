@@ -44,14 +44,14 @@
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label for="validationCustom01">Nombres</label>
-                                <h:inputText class="form-control" id="nombresId"  maxlength="20" html5:placeholder="Nombres"  required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre"  />
+                                <h:inputText value="#{usuarioSesion.nombre}" class="form-control" id="nombresId"  maxlength="20" html5:placeholder="Nombres"  required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre"  />
                                     <div class="valid-feedback">
                                         <h:message for="nombresId"></h:message>
                                     </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="validationCustom02">Apellidos</label>
-                                         <h:inputText class="form-control" id="apellidosId" html5:placeholder="Apellidos" maxlength="20" required="true" validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un apellido"  />
+                                <h:inputText value="#{usuarioSesion.apellido}" class="form-control" id="apellidosId" html5:placeholder="Apellidos" maxlength="20" required="true" validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un apellido"  />
                                     <div class="valid-feedback">
                                         <h:message for="apellidosId"></h:message>
                                     </div>
@@ -63,7 +63,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroupPrepend">@</span>
                                     </div>
-                                            <h:inputText class="form-control" id="nombreUsuarioId" html5:placeholder="Nombre Usuario" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre usuario"  />
+                                    <h:inputText value="#{usuarioSesion.usuario}" class="form-control" id="nombreUsuarioId" html5:placeholder="Nombre Usuario" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre usuario"  />
                                     <div class="valid-feedback">
                                         <h:message for="nombreUsuarioId"></h:message>
                                     </div>
@@ -74,7 +74,7 @@
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom03">Clave</label>
-                                      <h:inputText class="form-control" id="claveId" html5:placeholder="Clave" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese una clave"  />
+                                <h:inputText value="#{usuarioSesion.clave}" class="form-control" id="claveId" html5:placeholder="Clave" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese una clave"  />
                                     <div class="valid-feedback">
                                         <h:message for="claveId"></h:message>
                                     </div>
@@ -82,7 +82,7 @@
                            
                              <div class="col-md-6 mb-3">
                                 <label for="validationCustom04">Correo</label>
-                                      <h:inputText class="form-control" id="correoId" html5:placeholder="Correo Electronico" maxlength="50" required="true"  validatorMessage="No debe superar 50 caracteres" requiredMessage="Ingrese una correo electronico"  />
+                                <h:inputText value="#{usuarioSesion.correo}" class="form-control" id="correoId" html5:placeholder="Correo Electronico" maxlength="50" required="true"  validatorMessage="No debe superar 50 caracteres" requiredMessage="Ingrese una correo electronico"  />
                                     <div class="valid-feedback">
                                         <h:message for="correoId"></h:message>
                                     </div>
