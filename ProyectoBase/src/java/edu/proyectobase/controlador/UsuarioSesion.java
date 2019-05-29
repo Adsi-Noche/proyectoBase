@@ -1,25 +1,28 @@
 package edu.proyectobase.controlador;
 
-import edu.proyectobase.modelo.Rol;
-import edu.proyectobase.modelo.Usuario;
+import edu.proyectobase.entidades.Usuario;
+import edu.proyectobase.facade.UsuarioFacadeLocal;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import javax.ejb.EJB;
+import org.primefaces.PrimeFaces;
 
 @Named(value = "usuarioSesion")
 @SessionScoped
 public class UsuarioSesion implements Serializable {
 
+    @EJB
+    UsuarioFacadeLocal usuarioFacadeLocal;
+
     private String nombre = "";
+    private String nombreUsuario = "";
     private String apellido = "";
-    private String usuario = "";
     private String clave = "";
     private String correo = "";
-    private List<Usuario> usuarioRegistrados = new ArrayList<>();
+    private String documento = "";
+    private int tipoDocumento = 0;
 
     public UsuarioSesion() {
 
@@ -41,14 +44,6 @@ public class UsuarioSesion implements Serializable {
         this.apellido = apellido;
     }
 
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
     public String getClave() {
         return clave;
     }
@@ -65,59 +60,60 @@ public class UsuarioSesion implements Serializable {
         this.correo = correo;
     }
 
-    public List<Usuario> getUsuarioRegistrados() {
-        return usuarioRegistrados;
+    public String getDocumento() {
+        return documento;
     }
 
-    public void setusuarioRegistrados(List<Usuario> usuarioRegistrados) {
-        this.usuarioRegistrados = usuarioRegistrados;
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
 
-    public boolean ValidarNombreUsuario() {
-        for (Usuario obj : usuarioRegistrados) {
-            if (obj.getUsuario().equals(usuario)) {
-                return false;
-            }
+    public int getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(int tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public List<Usuario> leerTodosUsuario() {
+        try {
+            return usuarioFacadeLocal.findAll();
+        } catch (Exception e) {
+            return null;
         }
-        return true;
     }
 
-    public String validarUsuario() {
-        for (Usuario obj : usuarioRegistrados) {
-            if (obj.getUsuario().equals(usuario) && obj.getClave().equals(clave)) {
-                return "Administrador/index.xhtml?faces-redirect=true";
-            }
+    public String ingresarUsuario() {
+        try {
+            Usuario usuIn = new Usuario();
+            usuIn.setUSUTipoDocumento(tipoDocumento);
+            usuIn.setUSUDocumento(documento);
+            usuIn.setUSUApellidos(apellido);
+            usuIn.setUSUNombres(nombre);
+            usuIn.setUSUCorreoElectronico(correo);
+            usuIn.setUSUClave(clave);
+            usuarioFacadeLocal.ingresarNuevoUsuario(usuIn);
+            PrimeFaces.current().executeScript("estadoOk('" + nombre + " " + apellido + "')");
+            
+            this.documento = "";
+            this.tipoDocumento = 0;
+            this.nombre = "";
+            this.apellido ="";
+            this.correo="";
+            this.clave="";
+        } catch (Exception e) {
+            PrimeFaces.current().executeScript("estadoBad('" + nombre + " " + apellido + "')");
         }
-
-        FacesMessage inforMessagge = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario no existe", "!");
-        FacesContext.getCurrentInstance().addMessage("mensajeNoExisteUser", inforMessagge);
-
         return "";
-    }
-
-    public void adicionarUsuario() {
-        if (ValidarNombreUsuario()) {
-            List<Rol> listaMisRoles = new ArrayList<>();
-            Rol roles = new Rol("Adrministrador", "Todos los permisos");
-            listaMisRoles.add(roles);
-            Usuario usulog = new Usuario(nombre, apellido, usuario, clave, correo, listaMisRoles);
-            usuarioRegistrados.add(usulog);
-            LimpiarFormulario();
-            FacesMessage inforMessagge = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario registrado", "satisfactoriamente");
-            FacesContext.getCurrentInstance().addMessage("mensajeRegistro", inforMessagge);
-        } else {
-            FacesMessage inforMessagge = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario ya existente", "!!");
-            FacesContext.getCurrentInstance().addMessage("mensajeRegistro", inforMessagge);
-        }
-
-    }
-
-    public void LimpiarFormulario() {
-        this.nombre = "";
-        this.apellido = "";
-        this.usuario = "";
-        this.clave = "";
-        this.correo = "";
     }
 
 }

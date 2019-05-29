@@ -2,13 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
         <!-- Required meta tags -->
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
 
     </h:head>
@@ -40,7 +41,27 @@
                 <div class="col-md-8">
                     <h:form>
                         <h:messages  style="color:red;margin:8px;"/> 
-                        <h:messages id="mensajeRegistro" style="color:blue;margin:8px;"/> 
+
+
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="tdl">Tipo Documento</label>
+                                <h:selectOneMenu  id="tdl" styleClass="form-control" value="#{usuarioSesion.tipoDocumento}" >
+                                    <f:selectItem itemValue="0" itemLabel="Seleccione ...."></f:selectItem>
+                                    <f:selectItem itemValue="1" itemLabel="CC"></f:selectItem>
+                                    <f:selectItem itemValue="2" itemLabel="TI"></f:selectItem>
+                                    <f:selectItem itemValue="3" itemLabel="Otro"></f:selectItem>
+                                </h:selectOneMenu>   
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="documentoTC">Documento</label>
+                                <h:inputText value="#{usuarioSesion.documento}" class="form-control" id="documentoTC" html5:placeholder="Numero documento" maxlength="20" required="true" validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un documento"  />
+                                <div class="valid-feedback">
+                                    <h:message for="documentoTC"></h:message>
+                                </div>
+                            </div>
+
+                        </div>
 
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
@@ -64,7 +85,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroupPrepend">@</span>
                                     </div>
-                                    <h:inputText value="#{usuarioSesion.usuario}" class="form-control" id="nombreUsuarioId" html5:placeholder="Nombre Usuario" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre usuario"  />
+                                    <h:inputText value="#{usuarioSesion.nombreUsuario}" class="form-control" id="nombreUsuarioId" html5:placeholder="Nombre Usuario" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre usuario"  />
                                     <div class="valid-feedback">
                                         <h:message for="nombreUsuarioId"></h:message>
                                     </div>
@@ -91,7 +112,7 @@
 
                         </div>
 
-                        <h:commandButton action="#{usuarioSesion.adicionarUsuario()}"  class="btn btn-primary" value="Registrar..."></h:commandButton>
+                        <h:commandButton  action="#{usuarioSesion.ingresarUsuario()}"  class="btn btn-primary" value="Registrar..."></h:commandButton>
 
                     </h:form>
 
@@ -102,6 +123,25 @@
 
         </div>
 
+        <script type="text/javascript">
+            function estadoOk(a) {
+                Swal.fire(
+                        'Registro OK !',
+                        a,
+                        'success'
+                        );
+
+            }
+
+            function estadoBad(a) {
+                Swal.fire(
+                        'Verifique sus datos, intente nuevamente  !',
+                        a,
+                        'error'
+                        );
+
+            }
+        </script>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
