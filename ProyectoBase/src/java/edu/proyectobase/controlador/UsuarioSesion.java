@@ -1,6 +1,7 @@
 package edu.proyectobase.controlador;
 
 import edu.proyectobase.entidades.Usuario;
+import edu.proyectobase.entidades.UsuarioRol;
 import edu.proyectobase.facade.UsuarioFacadeLocal;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -23,6 +24,7 @@ public class UsuarioSesion implements Serializable {
     private String correo = "";
     private String documento = "";
     private int tipoDocumento = 0;
+     private Usuario usuLogin;
 
     public UsuarioSesion() {
 
@@ -101,8 +103,20 @@ public class UsuarioSesion implements Serializable {
             usuIn.setUSUNombres(nombre);
             usuIn.setUSUCorreoElectronico(correo);
             usuIn.setUSUClave(clave);
-            usuarioFacadeLocal.ingresarNuevoUsuario(usuIn);
-            PrimeFaces.current().executeScript("estadoOk('" + nombre + " " + apellido + "')");
+            boolean usuarioReg;
+            usuarioReg=usuarioFacadeLocal.ingresarUsuario(usuIn);
+            if (usuarioReg) {
+                int posicion=usuarioFacadeLocal.consultaId(documento);
+                boolean resultado=usuarioFacadeLocal.asignarRol(posicion,3);
+                        resultado=usuarioFacadeLocal.asignarRol(posicion,1);
+                
+                
+            PrimeFaces.current().executeScript("estadoOk('" + nombre + " " + apellido + "')");           
+            }else{
+            PrimeFaces.current().executeScript("estadoBad('Usuario ya registrado')");
+            }
+            
+        
             
             this.documento = "";
             this.tipoDocumento = 0;
@@ -115,5 +129,39 @@ public class UsuarioSesion implements Serializable {
         }
         return "";
     }
+    
+    public String validarUsuario( ){
+        try {
+            this.usuLogin= usuarioFacadeLocal.iniciarSesion(clave, correo);
+            String ruta="#";
+            if (usuLogin !=null) {
+                for (UsuarioRol objRol : usuLogin.getUsuarioRolCollection()) {
+                    ruta=objRol.getROLPKRol().getROLNombre();
+                    break;
+                }
+   
+                return "/"+ruta+"/index.xhtml?faces-redirect=true";
+                        
+            } else {
+            PrimeFaces.current().executeScript("estadoBad('Usuario no registrado')");
+            return ""; 
+            }
+        } catch (Exception e) {
+            PrimeFaces.current().executeScript("estadoBad('Usuario no registrado')");
+            return "";
+            
+        }
+    }
 
+    
+    public List<Usuario> usuarioRegistrados(){
+    return  usuarioFacadeLocal.findAll();
+    }
+    public Usuario getUsuLogin() {
+        return usuLogin;
+    }
+
+    public void setUsuLogin(Usuario usuLogin) {
+        this.usuLogin = usuLogin;
+    }
 }

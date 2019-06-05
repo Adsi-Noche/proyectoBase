@@ -8,6 +8,39 @@
 
         <ui:composition template="./../Template/tema.xhtml">
 
+            
+            <ui:define name="left">
+                
+                 <div class="logo">
+        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+          <div class="logo-image-small">
+            <img src="../Template/assets/img/logo-small.png"/>
+          </div>
+        </a>
+        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+          #{usuarioSesion.usuLogin.USUNombres}  #{usuarioSesion.usuLogin.USUApellidos}
+          <!-- <div class="logo-image-big">
+            <img src="../../Template/../Template/assets/img/logo-big.png">
+          </div> -->
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+            <c:forEach items="#{usuarioSesion.usuLogin.usuarioRolCollection}" var="objUrol">
+             <li>
+                 <a href="../#{objUrol.ROLPKRol.ROLNombre}/index.xhtml?faces-redirect=true">
+              <i class="nc-icon nc-bank"></i>
+              <p>#{objUrol.ROLPKRol.ROLNombre}</p>
+            </a>
+          </li>
+            
+            </c:forEach>
+         
+         
+        </ul>
+      </div>
+            </ui:define>
+            
             <ui:define name="top">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
@@ -81,22 +114,20 @@
                         <tr>
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
-                            <th scope="col">Clave</th>
-                            <th scope="col">Usuario</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Documento</th>
                             <th scope="col">Rol</th>
                         </tr>
                     </thead> 
                     <tbody>
-                        <c:forEach var="usu"  items="#{usuarioSesion.usuarioRegistrados}">
+                        <c:forEach var="usu"  items="#{usuarioSesion.usuarioRegistrados()}">
                             <tr>
-                                <th scope="row">#{usu.nombre}</th>
-                                <td>#{usu.apellido}</td>
-                                <td>#{usu.clave}</td>
-                                <td>#{usu.usuario}</td>
+                                <th scope="row">#{usu.USUNombres}</th>
+                                <td>#{usu.USUApellidos}</td>
+                                <td>#{usu.USUCorreoElectronico}</td>
+                                <td>#{usu.USUDocumento}</td>
                                 <td>
-                                    <c:forEach var="rol" items="#{usu.rolesUsuario}">
-                                        #{rol.nombre}
-                                    </c:forEach>
+                                  ...
                                 </td>
                             </tr>
                         </c:forEach>

@@ -6,6 +6,7 @@
 package edu.proyectobase.facade;
 
 import edu.proyectobase.entidades.Usuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,23 +30,69 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
+
     @Override
-    public  boolean ingresarNuevoUsuario(Usuario usuIn){
+    public boolean ingresarUsuario(Usuario usuarioIn) {
+
         try {
-            Query q = em.createNativeQuery("INSERT INTO  TBL_Usuario(USU_Tipo_Documento, USU_Documento, USU_Nombres, USU_Apellidos, USU_Correo_Electronico, USU_Clave) VALUES (?,?,?,?,?,?)");
-            q.setParameter(1, usuIn.getUSUTipoDocumento());
-            q.setParameter(2, usuIn.getUSUDocumento());
-            q.setParameter(3, usuIn.getUSUNombres());
-            q.setParameter(4, usuIn.getUSUApellidos());
-            q.setParameter(5, usuIn.getUSUCorreoElectronico());
-            q.setParameter(6, usuIn.getUSUClave());
-            q.executeUpdate();
+            Query cUsuario = em.createNativeQuery("insert into TBL_Usuario (USU_Tipo_Documento, USU_Documento, USU_Nombres, USU_Apellidos, USU_Correo_Electronico, USU_Clave ) values (?,?, ?, ?,?, ?)");
+            cUsuario.setParameter(1, usuarioIn.getUSUTipoDocumento());
+            cUsuario.setParameter(2, usuarioIn.getUSUDocumento());
+            cUsuario.setParameter(3, usuarioIn.getUSUNombres());
+            cUsuario.setParameter(4, usuarioIn.getUSUApellidos());
+            cUsuario.setParameter(5, usuarioIn.getUSUCorreoElectronico());
+            cUsuario.setParameter(6, usuarioIn.getUSUClave());
+            cUsuario.executeUpdate();
             return true;
         } catch (Exception e) {
-            return  false;
+            return false;
         }
- 
-   }
+    }
     
+    @Override
+    public int consultaId(String numeroDoc) {
+        try {
+            Query cUsuario = em.createNativeQuery("select USU_PK_Usuario from TBL_Usuario where USU_Documento  = ?");
+            cUsuario.setParameter(1, numeroDoc);
+            int posicion = (int) cUsuario.getSingleResult();
+            return posicion;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    
+    @Override
+    public boolean asignarRol(int usuarioId, int rolId) {
+        try {
+            Query cUsuario = em.createNativeQuery("insert into TBL_Usuario_Rol (USU_PK_Usuario, ROL_PK_Rol)  values (?, ?)");
+            cUsuario.setParameter(1, usuarioId);
+            cUsuario.setParameter(2, rolId);
+            cUsuario.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    @Override
+    public Usuario iniciarSesion(String clave, String email) {
+
+        try {
+            em.getEntityManagerFactory().getCache().evictAll();;
+            Query inicioUsu = em.createQuery("SELECT f FROM Usuario f WHERE f.uSUClave = :uSuclave AND f.uSUCorreoElectronico = :uSUCorreoElectronico ");
+            inicioUsu.setParameter("uSuclave", clave);
+            inicioUsu.setParameter("uSUCorreoElectronico", email);
+            List<Usuario> listaResultados = inicioUsu.getResultList();
+            if (listaResultados.isEmpty()) {
+                return null;
+            } else {
+                return listaResultados.get(0);
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
 }

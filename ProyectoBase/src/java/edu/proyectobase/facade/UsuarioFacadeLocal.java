@@ -30,6 +30,17 @@ public interface UsuarioFacadeLocal {
 
     int count();
 
-    public boolean ingresarNuevoUsuario(Usuario usuIn);
+    public boolean ingresarUsuario(Usuario usuarioIn);
+
+    public int consultaId(String numeroDoc);
+
+    public boolean asignarRol(int usuarioId, int rolId);
+
+    public Usuario iniciarSesion(String clave, String email);
+    
+    
+    
+
+   
     
 }
