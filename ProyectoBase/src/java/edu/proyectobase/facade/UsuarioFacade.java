@@ -35,13 +35,16 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     public boolean ingresarUsuario(Usuario usuarioIn) {
 
         try {
-            Query cUsuario = em.createNativeQuery("insert into TBL_Usuario (USU_Tipo_Documento, USU_Documento, USU_Nombres, USU_Apellidos, USU_Correo_Electronico, USU_Clave ) values (?,?, ?, ?,?, ?)");
-            cUsuario.setParameter(1, usuarioIn.getUSUTipoDocumento());
+            Query cUsuario = em.createNativeQuery("insert into TBL_Usuario (USU_Tipo_Documento, USU_Documento, USU_Nombres, USU_Apellidos, USU_Correo_Electronico, USU_Clave, USU_Estado ) values (?,?, ?, ?,?, ?, ?)");
+        
+            cUsuario.setParameter(1, usuarioIn.getUSUTipoDocumento().getTdoctipoDocumentoId());
             cUsuario.setParameter(2, usuarioIn.getUSUDocumento());
             cUsuario.setParameter(3, usuarioIn.getUSUNombres());
             cUsuario.setParameter(4, usuarioIn.getUSUApellidos());
             cUsuario.setParameter(5, usuarioIn.getUSUCorreoElectronico());
             cUsuario.setParameter(6, usuarioIn.getUSUClave());
+            cUsuario.setParameter(7, "Activo");
+            
             cUsuario.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -79,7 +82,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
 
         try {
             em.getEntityManagerFactory().getCache().evictAll();;
-            Query inicioUsu = em.createQuery("SELECT f FROM Usuario f WHERE f.uSUClave = :uSuclave AND f.uSUCorreoElectronico = :uSUCorreoElectronico ");
+            Query inicioUsu = em.createQuery("SELECT f FROM Usuario f WHERE f.uSUClave = :uSuclave AND f.uSUCorreoElectronico = :uSUCorreoElectronico AND f.uSUEstado= 'Activo'");
             inicioUsu.setParameter("uSuclave", clave);
             inicioUsu.setParameter("uSUCorreoElectronico", email);
             List<Usuario> listaResultados = inicioUsu.getResultList();
@@ -94,5 +97,40 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         }
 
     }
+    
+    @Override
+    public boolean removerUsuario(int idUsuario){
+    
+        try {
+            
+            Query removerUSu = em.createNativeQuery("DELETE from TBL_Usuario where USU_PK_Usuario = ?");
+            removerUSu.setParameter(1, idUsuario);
+            removerUSu.executeUpdate();
+            
+            return true;
+            
+        } catch (Exception e) {
+return false;        }
+    
+    }
+    
+        
+    @Override
+    public boolean cambiarEstadoUsu(int idUsuario, String estado){
+    
+        try {
+            
+            Query removerUSu = em.createNativeQuery("UPDATE TBL_Usuario SET USU_Estado = ? where USU_PK_Usuario = ?");
+            removerUSu.setParameter(1, idUsuario);
+            removerUSu.setParameter(2, estado);
+            removerUSu.executeUpdate();
+            
+            return true;
+            
+        } catch (Exception e) {
+return false;        }
+    
+    }
+    
 
 }

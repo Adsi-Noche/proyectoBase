@@ -46,9 +46,8 @@
                                 <label for="tdl">Tipo Documento</label>
                                 <h:selectOneMenu  id="tdl" styleClass="form-control" value="#{usuarioSesion.tipoDocumento}" >
                                     <f:selectItem itemValue="0" itemLabel="Seleccione ...."></f:selectItem>
-                                    <f:selectItem itemValue="1" itemLabel="CC"></f:selectItem>
-                                    <f:selectItem itemValue="2" itemLabel="TI"></f:selectItem>
-                                    <f:selectItem itemValue="3" itemLabel="Otro"></f:selectItem>
+                                    <f:selectItems   value="#{usuarioSesion.lstTipoDocumento()}" var="tipodocumento" itemLabel="#{tipodocumento.descripcion}" itemValue="#{tipodocumento.tdoctipoDocumentoId}"> </f:selectItems>
+                                   
                                 </h:selectOneMenu>   
                             </div>
                             <div class="col-md-4 mb-3">

@@ -11,12 +11,16 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,15 +28,9 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "TBL_Usuario")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findByUSUPKUsuario", query = "SELECT u FROM Usuario u WHERE u.uSUPKUsuario = :uSUPKUsuario")
-    , @NamedQuery(name = "Usuario.findByUSUTipoDocumento", query = "SELECT u FROM Usuario u WHERE u.uSUTipoDocumento = :uSUTipoDocumento")
-    , @NamedQuery(name = "Usuario.findByUSUDocumento", query = "SELECT u FROM Usuario u WHERE u.uSUDocumento = :uSUDocumento")
-    , @NamedQuery(name = "Usuario.findByUSUNombres", query = "SELECT u FROM Usuario u WHERE u.uSUNombres = :uSUNombres")
-    , @NamedQuery(name = "Usuario.findByUSUApellidos", query = "SELECT u FROM Usuario u WHERE u.uSUApellidos = :uSUApellidos")
-    , @NamedQuery(name = "Usuario.findByUSUCorreoElectronico", query = "SELECT u FROM Usuario u WHERE u.uSUCorreoElectronico = :uSUCorreoElectronico")
-    , @NamedQuery(name = "Usuario.findByUSUClave", query = "SELECT u FROM Usuario u WHERE u.uSUClave = :uSUClave")})
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +39,6 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "USU_PK_Usuario")
     private Integer uSUPKUsuario;
-    @Column(name = "USU_Tipo_Documento")
-    private Integer uSUTipoDocumento;
     @Size(max = 50)
     @Column(name = "USU_Documento")
     private String uSUDocumento;
@@ -58,6 +54,12 @@ public class Usuario implements Serializable {
     @Size(max = 50)
     @Column(name = "USU_Clave")
     private String uSUClave;
+    @Size(max = 50)
+    @Column(name = "USU_Estado")
+    private String uSUEstado;
+    @JoinColumn(name = "USU_Tipo_Documento", referencedColumnName = "tdoc_tipoDocumentoId")
+    @ManyToOne
+    private TipoDocumento uSUTipoDocumento;
     @OneToMany(mappedBy = "uSUPKUsuario")
     private Collection<UsuarioRol> usuarioRolCollection;
 
@@ -74,14 +76,6 @@ public class Usuario implements Serializable {
 
     public void setUSUPKUsuario(Integer uSUPKUsuario) {
         this.uSUPKUsuario = uSUPKUsuario;
-    }
-
-    public Integer getUSUTipoDocumento() {
-        return uSUTipoDocumento;
-    }
-
-    public void setUSUTipoDocumento(Integer uSUTipoDocumento) {
-        this.uSUTipoDocumento = uSUTipoDocumento;
     }
 
     public String getUSUDocumento() {
@@ -124,6 +118,23 @@ public class Usuario implements Serializable {
         this.uSUClave = uSUClave;
     }
 
+    public String getUSUEstado() {
+        return uSUEstado;
+    }
+
+    public void setUSUEstado(String uSUEstado) {
+        this.uSUEstado = uSUEstado;
+    }
+
+    public TipoDocumento getUSUTipoDocumento() {
+        return uSUTipoDocumento;
+    }
+
+    public void setUSUTipoDocumento(TipoDocumento uSUTipoDocumento) {
+        this.uSUTipoDocumento = uSUTipoDocumento;
+    }
+
+    @XmlTransient
     public Collection<UsuarioRol> getUsuarioRolCollection() {
         return usuarioRolCollection;
     }

@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -23,9 +24,9 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "TBL_Usuario_Rol")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UsuarioRol.findAll", query = "SELECT u FROM UsuarioRol u")
-    , @NamedQuery(name = "UsuarioRol.findByUSRPKUsuarioRol", query = "SELECT u FROM UsuarioRol u WHERE u.uSRPKUsuarioRol = :uSRPKUsuarioRol")})
+    @NamedQuery(name = "UsuarioRol.findAll", query = "SELECT u FROM UsuarioRol u")})
 public class UsuarioRol implements Serializable {
 
     private static final long serialVersionUID = 1L;

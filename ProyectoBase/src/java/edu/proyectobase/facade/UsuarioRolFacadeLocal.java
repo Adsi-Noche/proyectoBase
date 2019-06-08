@@ -29,5 +29,7 @@ public interface UsuarioRolFacadeLocal {
     List<UsuarioRol> findRange(int[] range);
 
     int count();
+
+    public boolean removerPermisos(int idUsuario);
     
 }

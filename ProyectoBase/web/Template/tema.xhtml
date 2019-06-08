@@ -21,6 +21,7 @@
         <link href="../Template/assets/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link href="../Template/assets/demo/demo.css" rel="stylesheet" />
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     </h:head>
 
     <h:body>
@@ -57,7 +58,25 @@
         </div>
 
 
+        <script type="text/javascript">
+            function estadoOk(a) {
+                Swal.fire(
+                        'Registro OK !',
+                        a,
+                        'success'
+                        );
 
+            }
+
+            function estadoBad(a) {
+                Swal.fire(
+                        'Verifique sus datos, intente nuevamente  !',
+                        a,
+                        'error'
+                        );
+
+            }
+        </script>
    
 
 

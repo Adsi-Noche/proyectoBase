@@ -2,45 +2,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <body>
 
         <ui:composition template="./../Template/tema.xhtml">
 
-            
+
             <ui:define name="left">
-                
-                 <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-          <div class="logo-image-small">
-            <img src="../Template/assets/img/logo-small.png"/>
-          </div>
-        </a>
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          #{usuarioSesion.usuLogin.USUNombres}  #{usuarioSesion.usuLogin.USUApellidos}
-          <!-- <div class="logo-image-big">
-            <img src="../../Template/../Template/assets/img/logo-big.png">
-          </div> -->
-        </a>
-      </div>
-      <div class="sidebar-wrapper">
-        <ul class="nav">
-            <c:forEach items="#{usuarioSesion.usuLogin.usuarioRolCollection}" var="objUrol">
-             <li>
-                 <a href="../#{objUrol.ROLPKRol.ROLNombre}/index.xhtml?faces-redirect=true">
-              <i class="nc-icon nc-bank"></i>
-              <p>#{objUrol.ROLPKRol.ROLNombre}</p>
-            </a>
-          </li>
-            
-            </c:forEach>
-         
-         
-        </ul>
-      </div>
+
+                <div class="logo">
+                    <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+                        <div class="logo-image-small">
+                            <img src="../Template/assets/img/logo-small.png"/>
+                        </div>
+                    </a>
+                    <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+                        #{usuarioSesion.usuLogin.USUNombres}  #{usuarioSesion.usuLogin.USUApellidos}
+                        <!-- <div class="logo-image-big">
+                          <img src="../../Template/../Template/assets/img/logo-big.png">
+                        </div> -->
+                    </a>
+                </div>
+                <div class="sidebar-wrapper">
+                    <ul class="nav">
+                        <c:forEach items="#{usuarioSesion.usuLogin.usuarioRolCollection}" var="objUrol">
+                            <li>
+                                <a href="../#{objUrol.ROLPKRol.ROLNombre}/index.xhtml?faces-redirect=true">
+                                    <i class="nc-icon nc-bank"></i>
+                                    <p>#{objUrol.ROLPKRol.ROLNombre}</p>
+                                </a>
+                            </li>
+
+                        </c:forEach>
+
+
+                    </ul>
+                </div>
             </ui:define>
-            
+
             <ui:define name="top">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
@@ -116,21 +117,35 @@
                             <th scope="col">Apellido</th>
                             <th scope="col">Correo</th>
                             <th scope="col">Documento</th>
-                            <th scope="col">Rol</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead> 
                     <tbody>
-                        <c:forEach var="usu"  items="#{usuarioSesion.usuarioRegistrados()}">
-                            <tr>
-                                <th scope="row">#{usu.USUNombres}</th>
-                                <td>#{usu.USUApellidos}</td>
-                                <td>#{usu.USUCorreoElectronico}</td>
-                                <td>#{usu.USUDocumento}</td>
-                                <td>
-                                  ...
-                                </td>
-                            </tr>
-                        </c:forEach>
+                        <h:form>
+                            <c:forEach var="usu"  items="#{usuarioSesion.usuarioRegistrados()}">
+                                <tr>
+                                    <th scope="row">#{usu.USUNombres}</th>
+                                    <td>#{usu.USUApellidos}</td>
+                                    <td>#{usu.USUCorreoElectronico}</td>
+                                    <td>#{usu.USUDocumento}</td>
+
+                                    <td>
+                                        #{usu.USUEstado}
+
+                                    </td>
+                                    <td>
+                                        <c:if test="#{usu.USUDocumento != usuarioSesion.usuLogin.USUDocumento}">
+                                            <h:commandButton value="Eliminar" class="btn btn-danger" ></h:commandButton>
+                                            <h:commandButton action="#{usuarioSesion.cambiarEstado(usu.USUPKUsuario)}" value="Cambiar #{usu.USUEstado}" class="btn btn-danger" ></h:commandButton>
+                                            
+                                            
+                                        </c:if>
+                                         
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </h:form>
                     </tbody>
                 </table>
 

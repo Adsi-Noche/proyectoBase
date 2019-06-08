@@ -2,7 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -111,35 +114,86 @@
             <ui:define name="content">
 
 
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
+                     <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <h:form>
+                        <h:messages  style="color:red;margin:8px;"/> 
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="tdl">Tipo Documento</label>
+                                <h:selectOneMenu  id="tdl" styleClass="form-control" value="#{usuarioSesion.usuLogin.USUTipoDocumento.tdoctipoDocumentoId}" >
+                                    <f:selectItem itemValue="0" itemLabel="Seleccione ...."></f:selectItem>
+                                    <f:selectItems   value="#{usuarioSesion.lstTipoDocumento()}" var="tipodocumento" itemLabel="#{tipodocumento.descripcion}" itemValue="#{tipodocumento.tdoctipoDocumentoId}"> </f:selectItems>
+                                   
+                                </h:selectOneMenu>   
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="documentoTC">Documento</label>
+                                <h:inputText value="#{usuarioSesion.usuLogin.USUDocumento}" class="form-control" id="documentoTC" html5:placeholder="Numero documento" maxlength="20" required="true" validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un documento"  />
+                                <div class="valid-feedback">
+                                    <h:message for="documentoTC"></h:message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="validationCustom01">Nombres</label>
+                                <h:inputText value="#{usuarioSesion.usuLogin.USUNombres}" class="form-control" id="nombresId"  maxlength="20" html5:placeholder="Nombres"  required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre"  />
+                                <div class="valid-feedback">
+                                    <h:message for="nombresId"></h:message>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="validationCustom02">Apellidos</label>
+                                <h:inputText value="#{usuarioSesion.usuLogin.USUApellidos}" class="form-control" id="apellidosId" html5:placeholder="Apellidos" maxlength="20" required="true" validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un apellido"  />
+                                <div class="valid-feedback">
+                                    <h:message for="apellidosId"></h:message>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="validationCustomUsername">Nombre Usuario</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                    </div>
+                                    <h:inputText value="#{usuarioSesion.nombreUsuario}" class="form-control" id="nombreUsuarioId" html5:placeholder="Nombre Usuario" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese un nombre usuario"  />
+                                    <div class="valid-feedback">
+                                        <h:message for="nombreUsuarioId"></h:message>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom03">Clave</label>
+                                <h:inputText value="#{usuarioSesion.usuLogin.USUClave}" class="form-control" id="claveId" html5:placeholder="Clave" maxlength="20" required="true"  validatorMessage="No debe superar 20 caracteres" requiredMessage="Ingrese una clave"  />
+                                <div class="valid-feedback">
+                                    <h:message for="claveId"></h:message>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom04">Correo</label>
+                                <h:inputText value="#{usuarioSesion.usuLogin.USUCorreoElectronico}" class="form-control" id="correoId" html5:placeholder="Correo Electronico" maxlength="50" required="true"  validatorMessage="No debe superar 50 caracteres" requiredMessage="Ingrese una correo electronico"  />
+                                <div class="valid-feedback">
+                                    <h:message for="correoId"></h:message>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <h:commandButton  action="#{usuarioSesion.actualizarUsuario()}"  class="btn btn-primary" value="Actualizar..."></h:commandButton>
+
+                    </h:form>
+
+                </div>
+                <div class="col-md-2"></div>
+
+            </div>
+
 
             </ui:define>
 

@@ -37,6 +37,10 @@ public interface UsuarioFacadeLocal {
     public boolean asignarRol(int usuarioId, int rolId);
 
     public Usuario iniciarSesion(String clave, String email);
+
+    public boolean removerUsuario(int idUsuario);
+
+    public boolean cambiarEstadoUsu(int idUsuario, String estado);
     
     
     
