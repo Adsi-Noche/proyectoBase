@@ -36,7 +36,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
 
         try {
             Query cUsuario = em.createNativeQuery("insert into TBL_Usuario (USU_Tipo_Documento, USU_Documento, USU_Nombres, USU_Apellidos, USU_Correo_Electronico, USU_Clave, USU_Estado ) values (?,?, ?, ?,?, ?, ?)");
-        
+
             cUsuario.setParameter(1, usuarioIn.getUSUTipoDocumento().getTdoctipoDocumentoId());
             cUsuario.setParameter(2, usuarioIn.getUSUDocumento());
             cUsuario.setParameter(3, usuarioIn.getUSUNombres());
@@ -44,14 +44,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
             cUsuario.setParameter(5, usuarioIn.getUSUCorreoElectronico());
             cUsuario.setParameter(6, usuarioIn.getUSUClave());
             cUsuario.setParameter(7, "Activo");
-            
+
             cUsuario.executeUpdate();
             return true;
         } catch (Exception e) {
             return false;
         }
     }
-    
+
     @Override
     public int consultaId(String numeroDoc) {
         try {
@@ -63,7 +63,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
             return 0;
         }
     }
-    
+
     @Override
     public boolean asignarRol(int usuarioId, int rolId) {
         try {
@@ -76,12 +76,12 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
             return false;
         }
     }
-    
+
     @Override
     public Usuario iniciarSesion(String clave, String email) {
 
         try {
-            em.getEntityManagerFactory().getCache().evictAll();;
+            em.getEntityManagerFactory().getCache().evictAll();
             Query inicioUsu = em.createQuery("SELECT f FROM Usuario f WHERE f.uSUClave = :uSuclave AND f.uSUCorreoElectronico = :uSUCorreoElectronico AND f.uSUEstado= 'Activo'");
             inicioUsu.setParameter("uSuclave", clave);
             inicioUsu.setParameter("uSUCorreoElectronico", email);
@@ -97,40 +97,58 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         }
 
     }
-    
+
     @Override
-    public boolean removerUsuario(int idUsuario){
-    
+    public boolean removerUsuario(int idUsuario) {
+
         try {
-            
+
             Query removerUSu = em.createNativeQuery("DELETE from TBL_Usuario where USU_PK_Usuario = ?");
             removerUSu.setParameter(1, idUsuario);
             removerUSu.executeUpdate();
-            
+
             return true;
-            
+
         } catch (Exception e) {
-return false;        }
-    
+            return false;
+        }
+
     }
-    
-        
+
     @Override
-    public boolean cambiarEstadoUsu(int idUsuario, String estado){
-    
+    public boolean cambiarEstadoUsu(int idUsuario, String estado) {
+
         try {
-            
+
             Query removerUSu = em.createNativeQuery("UPDATE TBL_Usuario SET USU_Estado = ? where USU_PK_Usuario = ?");
             removerUSu.setParameter(1, idUsuario);
             removerUSu.setParameter(2, estado);
             removerUSu.executeUpdate();
-            
+
             return true;
-            
+
         } catch (Exception e) {
-return false;        }
-    
+            return false;
+        }
+
     }
-    
+
+    @Override
+    public List<Usuario> filtrarUsuarios(String documento, String nombre ) {
+        try {
+              em.getEntityManagerFactory().getCache().evictAll();
+            String consultar = "";
+            if (documento.trim().equals("") && nombre.trim().equals("")) {
+                consultar = "select * from TBL_Usuario";
+            } else {
+                consultar = "select * from TBL_Usuario where USU_Documento like '" + documento + "%' and USU_Nombres like '"+nombre+"%' order by USU_Documento desc";
+            }
+            Query filtrarU = em.createNativeQuery(consultar, Usuario.class);
+            List<Usuario> listu = filtrarU.getResultList();
+            return listu;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

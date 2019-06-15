@@ -2,8 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
+
 
     <body>
 
@@ -11,6 +13,7 @@
 
 
             <ui:define name="left">
+
 
                 <div class="logo">
                     <a href="http://www.creative-tim.com" class="simple-text logo-mini">
@@ -108,52 +111,86 @@
             </ui:define>
 
             <ui:define name="content">
+                <h:form>
+                    <div class="row">
+                        <div class="col-6"> 
+                            <label for="documentoTC">Documento</label>
+                            <h:inputText value="#{usuarioSesion.documento}" class="form-control" html5:placeholder="Numero documento"/>
+                            <div class="valid-feedback">
+                                <h:message for="documentoTC"></h:message>
+                            </div>
+                            <label for="validationCustom01">Nombres</label>
+                            <h:inputText value="#{usuarioSesion.nombre}" class="form-control"  html5:placeholder="Nombres" />
+                            <div class="valid-feedback">
+                                <h:message for="nombresId"></h:message>
+                            </div>
+                        </div>
 
 
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Apellido</th>
-                            <th scope="col">Correo</th>
-                            <th scope="col">Documento</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead> 
-                    <tbody>
-                        <h:form>
-                            <c:forEach var="usu"  items="#{usuarioSesion.usuarioRegistrados()}">
-                                <tr>
-                                    <th scope="row">#{usu.USUNombres}</th>
-                                    <td>#{usu.USUApellidos}</td>
-                                    <td>#{usu.USUCorreoElectronico}</td>
-                                    <td>#{usu.USUDocumento}</td>
+                        <div class="col-6"> 
 
-                                    <td>
-                                        #{usu.USUEstado}
+                            <h:commandButton class="btn btn-success" value="Buscar" action="index">
 
-                                    </td>
-                                    <td>
-                                        <c:if test="#{usu.USUDocumento != usuarioSesion.usuLogin.USUDocumento}">
-                                            <h:commandButton value="Eliminar" class="btn btn-danger" ></h:commandButton>
-                                            <h:commandButton action="#{usuarioSesion.cambiarEstado(usu.USUPKUsuario)}" value="Cambiar #{usu.USUEstado}" class="btn btn-danger" ></h:commandButton>
-                                            
-                                            
-                                        </c:if>
-                                         
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </h:form>
-                    </tbody>
-                </table>
+                            </h:commandButton>
 
+                            <button class="btn btn-danger" type="button" id="btnexportar" onclick="Export()">.XLS</button>
+                        </div>                            
+
+                    </div>
+
+                </h:form>
+
+                <div id="miTabla">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Documento</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                            <h:form>
+                                <c:forEach var="usu"  items="#{usuarioSesion.usuarioRegistrados()}">
+                                    <tr>
+                                        <th scope="row">#{usu.USUNombres}</th>
+                                        <td>#{usu.USUApellidos}</td>
+                                        <td>#{usu.USUCorreoElectronico}</td>
+                                        <td>#{usu.USUDocumento}</td>
+
+                                        <td>
+                                            #{usu.USUEstado}
+
+                                        </td>
+                                        <td>
+                                            <c:if test="#{usu.USUDocumento != usuarioSesion.usuLogin.USUDocumento}">
+
+                                                <h:commandButton action="#{usuarioSesion.cambiarEstado(usu.USUPKUsuario)}" value="Cambiar #{usu.USUEstado}" class="btn btn-danger" ></h:commandButton>
+
+
+                                            </c:if>
+
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </h:form>
+                        </tbody>
+                    </table>
+                </div>
+                <script type="text/javascript">
+                    function Export() {
+                        $("#miTabla").table2excel({
+                            filename: "Table.xls"
+                        });
+                    }
+                </script>
             </ui:define>
-
-
 
         </ui:composition>
 
     </body>
+
 </html>

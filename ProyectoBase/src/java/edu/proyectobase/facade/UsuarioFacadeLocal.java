@@ -41,6 +41,8 @@ public interface UsuarioFacadeLocal {
     public boolean removerUsuario(int idUsuario);
 
     public boolean cambiarEstadoUsu(int idUsuario, String estado);
+
+    public List<Usuario> filtrarUsuarios(String documento, String nombre);
     
     
     
